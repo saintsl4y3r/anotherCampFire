@@ -1,38 +1,20 @@
 import { createSchema } from "graphql-yoga";
-import { GraphQLError } from "graphql";
 import _ from "lodash";
 
-const typeDefs = `
-   type Query {
-   	# ... Ghi chú này sẽ không xuất hiện trong tài liệu mô tả API
-      """
-      Lời chào cho biết server đang hoạt động
-      """
-      hello: String
-      
-      """
-      Chào hỏi một người dùng cụ thể
-      """
-      salute (
-        "Tên của người dùng"
-        name: String!
-      ): String 
-   }
+import { typeDef as categories, resolvers as categoriesResolvers } from "./categories.js";
+import { typeDef as products, resolvers as productsResolvers } from "./categories.js";
+
+const query = `
+  type Query {
+    _empty: String
+  }
+
+  type Mutation {
+    _emptyAction: String
+  }
 `;
-
-const resolvers = {
-  Query: {
-    hello: (parent, args, context, info) => {
-      if (!_.has(context, "secret")) {
-        return new GraphQLError("A secret is required.");
-      }
-
-      return `Hello World! ${context.secret}`;    
-    },
-    salute: (parent, args, context, info) =>
-      `Hello ${args.name} ${context.secret}`,
-  },
-};
+const typeDefs = [query, categories, products];
+const resolvers = _.merge(categoriesResolvers, productsResolvers);
 
 export const schema = createSchema({
   typeDefs: typeDefs,
