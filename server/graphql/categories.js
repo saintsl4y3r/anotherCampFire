@@ -1,6 +1,6 @@
 export const typeDef = `
     type Category {
-        id: Int!
+        _id: ID!
         name: String! 
     }
     

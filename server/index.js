@@ -5,6 +5,9 @@ import { useGraphQLMiddleware } from "@envelop/graphql-middleware";
 import { permissions } from "./permissions.js";
 import { db } from "./config.js";
 
+import {initDatabase} from "./data/init.js"
+await initDatabase();
+
 const yoga = createYoga({
   schema,
   graphqlEndpoint: "/",
