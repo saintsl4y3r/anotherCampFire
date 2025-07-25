@@ -1,4 +1,10 @@
 import { Category } from "./models/index.js";
+import { Product } from "./models/index.js";
+import { Manufacturer } from "./models/index.js";
+import { Detail } from "./models/index.js";
+import { Order } from "./models/index.js";
+import { Review } from "./models/index.js";
+import { User } from "./models/index.js";
 
 const db = {
   categories: {
