@@ -1,3 +1,5 @@
+// graphql/products.js
+
 export const typeDef = `
   type Product {
     productID: Int!
@@ -6,7 +8,7 @@ export const typeDef = `
     categoryID: Int!
     manuID: Int!
     category: Category
-    manufacturer: Manu
+    manufacturer: Manufacturer
     details: [Detail!]!
     reviews: [Review!]!
   }
@@ -24,7 +26,8 @@ export const typeDef = `
   }
 
   extend type Mutation {
-    deleteProduct(productID: Int!): Int      # trả về số bản ghi xóa được
+    # Trả về số lượng bản ghi bị xóa
+    deleteProduct(productID: Int!): Int
     createProduct(input: ProductInput!): Product!
     updateProduct(productID: Int!, input: ProductInput!): Product!
   }
@@ -32,27 +35,38 @@ export const typeDef = `
 
 export const resolvers = {
   Query: {
-    products: (_, __, { db }) =>
-      db.products.getAll(),                 
-    product: (_, { productID }, { db }) =>
-      db.products.findById(productID),
+    products: async (_, __, { db }) => {
+      return db.products.getAll();
+    },
+    product: async (_, { productID }, { db }) => {
+      return db.products.findById(productID);
+    },
   },
+
   Mutation: {
-    deleteProduct: async (_, { productID }, { db }) =>
-      db.products.deleteById(productID),
-    createProduct: (_, { input }, { db }) =>
-      db.products.create(input),
-    updateProduct: (_, { productID, input }, { db }) =>
-      db.products.updateById(productID, input),
+    deleteProduct: async (_, { productID }, { db }) => {
+      return db.products.deleteById(productID);
+    },
+    createProduct: async (_, { input }, { db }) => {
+      return db.products.create(input);
+    },
+    updateProduct: async (_, { productID, input }, { db }) => {
+      return db.products.updateById(productID, input);
+    },
   },
+
   Product: {
-    category: (parent, _, { db }) =>
-      db.categories.findById(parent.categoryID),
-    manufacturer: (parent, _, { db }) =>
-      db.manus.findById(parent.manuID),
-    details: (parent, _, { db }) =>
-      db.details.getByProductId(parent.productID),
-    reviews: (parent, _, { db }) =>
-      db.reviews.getByProductId(parent.productID),
+    category: (parent, _, { db }) => {
+      return db.categories.findById(parent.categoryID);
+    },
+    manufacturer: (parent, _, { db }) => {
+      return db.manus.findById(parent.manuID);
+    },
+    details: (parent, _, { db }) => {
+      return db.details.getByProductId(parent.productID);
+    },
+    reviews: (parent, _, { db }) => {
+      return db.reviews.getByProductId(parent.productID);
+    },
   },
 };
