@@ -1,26 +1,22 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-// Định nghĩa các role và quyền
 const ROLES = {
   ADMIN: 'admin',
   USER: 'user'
 };
 
 const PERMISSIONS = {
-  // Quyền quản lý người dùng
   CREATE_USER: 'create_user',
   READ_USER: 'read_user',
   UPDATE_USER: 'update_user',
   DELETE_USER: 'delete_user',
   
-  // Quyền quản lý sản phẩm
   CREATE_PRODUCT: 'create_product',
   READ_PRODUCT: 'read_product',
   UPDATE_PRODUCT: 'update_product',
   DELETE_PRODUCT: 'delete_product',
   
-  // Quyền quản lý đơn hàng
   CREATE_ORDER: 'create_order',
   READ_ORDER: 'read_order',
   UPDATE_ORDER: 'update_order',

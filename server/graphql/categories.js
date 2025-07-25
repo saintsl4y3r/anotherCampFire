@@ -1,43 +1,43 @@
 export const typeDef = `
-    type Category {
-        _id: ID!
-        name: String! 
-    }
-    
-    input CategoryInput {
-      name: String!
-    }
-    
-    extend type Query {
-        categories: [Category]
-        category(id: Int!): Category
-    }
-    
-    extend type Mutation {
-      deleteCategory(id: Int!): Int
-      createCategory(input: CategoryInput!): Category
-      updateCategory(id: Int!, input: CategoryInput!): Category
-    }
+  type Category {
+    categoryID: Int!
+    categoryName: String!
+    products: [Product!]!
+  }
+
+  input CategoryInput {
+    categoryName: String!
+  }
+
+  extend type Query {
+    categories: [Category!]!
+    category(categoryID: Int!): Category
+  }
+
+  extend type Mutation {
+    deleteCategory(categoryID: Int!): Int    # trả về số bản ghi đã xóa
+    createCategory(input: CategoryInput!): Category!
+    updateCategory(categoryID: Int!, input: CategoryInput!): Category!
+  }
 `;
 
 export const resolvers = {
   Query: {
-    categories: (parent, args, context, info) => {
-      return context.db.categories.getAll();
-    },
-    category: (parent, args, context, info) => {
-      return context.db.categories.findById(args.id);
-    }
+    categories: (_, __, { db }) =>
+      db.categories.getAll(),
+    category: (_, { categoryID }, { db }) =>
+      db.categories.findById(categoryID),
   },
   Mutation: {
-    deleteCategory: (parent, args, context, info) => {
-      return context.db.categories.deleteById(args.id);
-    },
-    createCategory: (parent, args, context, info) => {
-      return context.db.categories.create(args.input);
-    },
-    updateCategory: (parent, args, context, info) => {
-      return context.db.categories.updateById(args.id, args.input);
-    },
+    deleteCategory: (_, { categoryID }, { db }) =>
+      db.categories.deleteById(categoryID),
+    createCategory: (_, { input }, { db }) =>
+      db.categories.create(input),
+    updateCategory: (_, { categoryID, input }, { db }) =>
+      db.categories.updateById(categoryID, input),
+  },
+  Category: {
+    products: (parent, _, { db }) =>
+      db.products.getByCategoryId(parent.categoryID),
   },
 };
