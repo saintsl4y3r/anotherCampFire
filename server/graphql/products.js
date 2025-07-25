@@ -33,7 +33,7 @@ export const typeDef = `
 export const resolvers = {
   Query: {
     products: (_, __, { db }) =>
-      db.products.getAll(),                 // giả sử có hàm này
+      db.products.getAll(),                 
     product: (_, { productID }, { db }) =>
       db.products.findById(productID),
   },

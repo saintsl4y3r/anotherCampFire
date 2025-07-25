@@ -32,12 +32,12 @@ export const resolvers = {
     order:(_, { orderID }, { db }) => db.orders.findById(orderID),
   },
   Mutation: {
-    deleteOrder:  (_, { orderID }, { db }) => db.orders.deleteById(orderID),
-    createOrder:  (_, { input }, { db }) => db.orders.create(input),
-    updateOrder:  (_, { orderID, input }, { db }) => db.orders.updateById(orderID, input),
+    deleteOrder:(_, { orderID }, { db }) => db.orders.deleteById(orderID),
+    createOrder:(_, { input }, { db }) => db.orders.create(input),
+    updateOrder:(_, { orderID, input }, { db }) => db.orders.updateById(orderID, input),
   },
   Order: {
-    customer:     (parent, _, { db }) => db.users.findById(parent.customerID),
-    details:      (parent, _, { db }) => db.details.getByOrderId(parent.orderID),
+    customer:(parent, _, { db }) => db.users.findById(parent.customerID),
+    details:(parent, _, { db }) => db.details.getByOrderId(parent.orderID),
   },
 };

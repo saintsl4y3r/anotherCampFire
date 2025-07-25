@@ -30,8 +30,8 @@ export const typeDef = `
 
 export const resolvers = {
   Query: {
-    details:      (_, __, { db }) => db.details.getAll(),
-    detail:       (_, { detailID }, { db }) => db.details.findById(detailID),
+    details:(_, __, { db }) => db.details.getAll(),
+    detail:(_, { detailID }, { db }) => db.details.findById(detailID),
   },
   Mutation: {
     deleteDetail: (_, { detailID }, { db }) => db.details.deleteById(detailID),
