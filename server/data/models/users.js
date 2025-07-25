@@ -218,7 +218,6 @@ const userSchema = new mongoose.Schema({
   toObject: { virtuals: true },
 });
 
-// ✅ Các index không bị trùng
 userSchema.index({ 'profile.phoneNumber': 1 });
 userSchema.index({ role: 1 });
 userSchema.index({ 'status.isActive': 1 });
@@ -226,7 +225,6 @@ userSchema.index({ createdAt: -1 });
 userSchema.index({ 'shopping.wishlist': 1 });
 userSchema.index({ 'metadata.referralCode': 1 });
 
-// ✅ Virtuals
 userSchema.virtual('displayName').get(function () {
   return this.profile.fullName || `${this.profile.firstName || ''} ${this.profile.lastName || ''}`.trim() || this.username;
 });
@@ -239,7 +237,6 @@ userSchema.virtual('defaultAddress').get(function () {
   return this.addresses.find(a => a.isDefault) || this.addresses[0];
 });
 
-// ... instance methods, statics, pre-hooks giữ nguyên như cũ ...
-
+// ... instance methods, statics, pre-hooks giữ nguyên như cũ ..
 const User = mongoose.model('User', userSchema);
 export default User;

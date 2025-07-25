@@ -1,22 +1,22 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import App from './App.jsx';
+import Login from './pages/Login.jsx';
+import StartPage from './pages/Start.page.jsx';
+import AdminDashboard from './pages/AdminDashboard.jsx';
+import UserHome from './pages/UserHome.jsx';
+import './index.css';
+import Register from './pages/Register.jsx';
 
-import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
-
-const client = new ApolloClient({
-  uri: "Đường dẫn đến graphql API của bạn",
-  cache: new InMemoryCache(),
-  fetchOptions: {
-    mode: "cors",
-  },
-});
-
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>
-  </StrictMode>,
-)
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<StartPage />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/admin" element={<AdminDashboard />} />
+      <Route path="/user" element={<UserHome />} />
+      <Route path="/register" element={<Register />} />
+    </Routes>
+  </BrowserRouter>
+);

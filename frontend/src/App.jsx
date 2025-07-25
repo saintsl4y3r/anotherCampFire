@@ -1,35 +1,58 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [view, setView] = useState('login'); // 'login' | 'register' | 'forgot'
+
+  const renderLogin = () => (
+    <div className="auth-card">
+      <h2>🔐 Đăng nhập CampFire</h2>
+      <input type="email" placeholder="Email" />
+      <input type="password" placeholder="Mật khẩu" />
+      <button>Đăng nhập</button>
+      <p className="link" onClick={() => setView('forgot')}>
+        Quên mật khẩu?
+      </p>
+      <p>
+        Chưa có tài khoản?{' '}
+        <span className="link" onClick={() => setView('register')}>Đăng ký</span>
+      </p>
+    </div>
+  );
+
+  const renderRegister = () => (
+    <div className="auth-card">
+      <h2>📝 Đăng ký tài khoản</h2>
+      <input type="text" placeholder="Họ và tên" />
+      <input type="email" placeholder="Email" />
+      <input type="password" placeholder="Mật khẩu" />
+      <button>Đăng ký</button>
+      <p>
+        Đã có tài khoản?{' '}
+        <span className="link" onClick={() => setView('login')}>Đăng nhập</span>
+      </p>
+    </div>
+  );
+
+  const renderForgot = () => (
+    <div className="auth-card">
+      <h2>🔁 Quên mật khẩu</h2>
+      <input type="email" placeholder="Nhập email của bạn" />
+      <button>Gửi lại mật khẩu</button>
+      <p>
+        <span className="link" onClick={() => setView('login')}>← Quay lại đăng nhập</span>
+      </p>
+    </div>
+  );
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="app-container">
+      <h1 className="title">CampFire 🏕️</h1>
+      {view === 'login' && renderLogin()}
+      {view === 'register' && renderRegister()}
+      {view === 'forgot' && renderForgot()}
+    </div>
+  );
 }
 
-export default App
+export default App;
