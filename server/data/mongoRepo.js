@@ -13,6 +13,18 @@ const db = {
       return created;
     },
   },
+  products: {
+    getAll: async () => {
+      const items = await Product.find();
+      return items;
+    },
+    create: async ({ name }) => {
+      const created = await Product.create({
+        name: name,
+      });
+      return created;
+    },
+  },
 };
 
 export { db };
