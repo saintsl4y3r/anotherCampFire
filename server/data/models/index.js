@@ -5,7 +5,7 @@ import { ProductSchema } from "./product.js";
 import { ManufacturerSchema } from "./manufacturer.js";
 import { DetailSchema } from "./detail.js";
 import { OrderSchema } from "./order.js";
-import { UserSchema } from "./user.js";
+import { UserSchema } from "./users.js";
 import { ReviewSchema } from "./review.js";
 
 export const Category = mongoose.model("category", CategorySchema);
