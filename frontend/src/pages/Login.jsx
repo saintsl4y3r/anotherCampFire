@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import {
   Box,
   Card,
@@ -7,9 +7,9 @@ import {
   Typography,
   TextField,
   Button,
-  Link,
   Snackbar,
   Alert,
+  Link,
 } from '@mui/material';
 
 const Login = () => {
@@ -26,7 +26,6 @@ const Login = () => {
       return;
     }
 
-    // 🧪 Giả lập xác thực tài khoản
     if (email === 'admin@campfire.com' && password === 'admin123') {
       navigate('/admin');
     } else if (email === 'user@campfire.com' && password === 'user123') {
@@ -86,10 +85,10 @@ const Login = () => {
           </Button>
 
           <Box textAlign="center">
-            <Link href="/register" underline="hover" sx={{ mr: 2 }}>
+            <Link component={RouterLink} to="/register" underline="hover" sx={{ mr: 2 }}>
               Đăng ký
             </Link>
-            <Link href="#" underline="hover">
+            <Link component={RouterLink} to="/forgot-password" underline="hover">
               Quên mật khẩu?
             </Link>
           </Box>
