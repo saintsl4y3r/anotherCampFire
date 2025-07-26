@@ -1,5 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { MANUFACTURERS_QUERY } from "../graphql/manufacturers.js";
+import { Link } from "react-router-dom";
 
 function Manufacturers() {
   const { data, loading, error } = useQuery(MANUFACTURERS_QUERY);
@@ -11,7 +12,7 @@ function Manufacturers() {
     <ul>
       {data.manufacturers.map((m) => (
         <li key={m.manuID}>
-          {m.manuName}
+          <Link to={`/manufacturer/${m.manuID}`}>{m.manuName}</Link>
         </li>
       ))}
     </ul>

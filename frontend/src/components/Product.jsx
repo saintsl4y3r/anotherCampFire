@@ -1,17 +1,30 @@
-import PropTypes from "prop-types";
+import { useParams, Link } from "react-router-dom";
+import { useQuery } from "@apollo/client";
+import { MANUFACTURER_QUERY as MANUFACTURER_BY_ID } from "../graphql/manufacturers.js";
 
-function Product({ productID, productName, price }) {
+function Manufacturer() {
+  const { id } = useParams();
+  const { data, loading, error } = useQuery(MANUFACTURER_BY_ID, {
+    variables: { manuID: parseInt(id, 10) },
+  });
+
+  if (loading) return "Loading...";
+  if (error)   return <pre>{error.message}</pre>;
+
+  const m = data.manufacturer;
   return (
     <div>
-      <strong>{productName}</strong> (ID: {productID}) — ${price.toFixed(2)}
+      <h2>{m.manuName} (ID: {m.manuID})</h2>
+      <h3>Products</h3>
+      <ul>
+        {m.products.map((p) => (
+          <li key={p.productID}>
+            <Link to={`/product/${p.productID}`}>{p.productName}</Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
 
-Product.propTypes = {
-  productID: PropTypes.number.isRequired,
-  productName: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-};
-
-export default Product;
+export default Manufacturer;

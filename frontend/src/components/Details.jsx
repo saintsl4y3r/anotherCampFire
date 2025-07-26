@@ -1,5 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { DETAILS_QUERY } from "../graphql/details.js";
+import { Link } from "react-router-dom";
 
 function Details() {
   const { data, loading, error } = useQuery(DETAILS_QUERY);
@@ -11,7 +12,9 @@ function Details() {
     <ul>
       {data.details.map((d) => (
         <li key={d.detailID}>
-          Detail #{d.detailID}: {d.quantity}× {d.product.productName} @ ${d.price} — in order #{d.order.orderID}
+          <Link to={`/detail/${d.detailID}`}>
+            #{d.detailID}: {d.quantity}× {d.product.productName} @ ${d.price.toFixed(2)}
+          </Link>
         </li>
       ))}
     </ul>

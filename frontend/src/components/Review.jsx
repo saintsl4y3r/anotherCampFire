@@ -1,28 +1,38 @@
-import PropTypes from "prop-types";
+import { useParams, Link } from "react-router-dom";
+import { useQuery } from "@apollo/client";
+import { REVIEW_QUERY as REVIEW_BY_ID } from "../graphql/reviews.js";
 
-function Review({ reviewID, rating, comment, createdAt, customer, product }) {
-  const date = new Date(createdAt).toLocaleDateString();
+function Review() {
+  const { id } = useParams();
+  const { data, loading, error } = useQuery(REVIEW_BY_ID, {
+    variables: { reviewID: parseInt(id, 10) },
+  });
+
+  if (loading) return "Loading...";
+  if (error)   return <pre>{error.message}</pre>;
+
+  const r = data.review;
+  const date = new Date(r.createdAt).toLocaleDateString();
   return (
     <div>
-      Review #{reviewID}: {rating}★ — "{comment}"<br/>
-      by <strong>{customer.userName}</strong> on {date} for <em>{product.productName}</em>
+      <h2>Review #{r.reviewID}</h2>
+      <p>Rating: {r.rating}★</p>
+      <p>Comment: "{r.comment}"</p>
+      <p>Date: {date}</p>
+      <p>
+        Customer:{" "}
+        <Link to={`/user/${r.customer.userID}`}>
+          {r.customer.userName}
+        </Link>
+      </p>
+      <p>
+        Product:{" "}
+        <Link to={`/product/${r.product.productID}`}>
+          {r.product.productName}
+        </Link>
+      </p>
     </div>
   );
 }
-
-Review.propTypes = {
-  reviewID: PropTypes.number.isRequired,
-  rating: PropTypes.number.isRequired,
-  comment: PropTypes.string,
-  createdAt: PropTypes.string.isRequired,
-  customer: PropTypes.shape({
-    userID: PropTypes.number,
-    userName: PropTypes.string.isRequired,
-  }).isRequired,
-  product: PropTypes.shape({
-    productID: PropTypes.number,
-    productName: PropTypes.string.isRequired,
-  }).isRequired,
-};
 
 export default Review;
