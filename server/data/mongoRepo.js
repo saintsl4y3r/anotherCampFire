@@ -61,3 +61,4 @@ const db = {
 
 export default db;
 export { MongoRepository };
+export { db };
