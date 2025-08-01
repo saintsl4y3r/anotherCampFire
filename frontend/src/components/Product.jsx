@@ -1,30 +1,37 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import { MANUFACTURER_QUERY as MANUFACTURER_BY_ID } from "../graphql/manufacturers.js";
+import { PRODUCT_QUERY as PRODUCT_BY_ID } from "../graphql/products.js";
 
-function Manufacturer() {
+function Product() {
   const { id } = useParams();
-  const { data, loading, error } = useQuery(MANUFACTURER_BY_ID, {
-    variables: { manuID: parseInt(id, 10) },
+  const { data, loading, error } = useQuery(PRODUCT_BY_ID, {
+    variables: { productID: parseInt(id, 10) },
   });
 
   if (loading) return "Loading...";
   if (error)   return <pre>{error.message}</pre>;
 
-  const m = data.manufacturer;
+  const p = data.product;
   return (
     <div>
-      <h2>{m.manuName} (ID: {m.manuID})</h2>
-      <h3>Products</h3>
-      <ul>
-        {m.products.map((p) => (
-          <li key={p.productID}>
-            <Link to={`/product/${p.productID}`}>{p.productName}</Link>
-          </li>
-        ))}
-      </ul>
+      <h2>{p.productName} (ID: {p.productID})</h2>
+      <p>Price: ${p.price.toFixed(2)}</p>
+      <p>
+        Category: {p.category.categoryName} (
+        <a href={`/category/${p.category.categoryID}`}>
+          {p.category.categoryID}
+        </a>
+        )
+      </p>
+      <p>
+        Manufacturer: {p.manufacturer.manuName} (
+        <a href={`/manufacturer/${p.manufacturer.manuID}`}>
+          {p.manufacturer.manuID}
+        </a>
+        )
+      </p>
     </div>
   );
 }
 
-export default Manufacturer;
+export default Product;

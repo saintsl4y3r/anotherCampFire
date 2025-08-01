@@ -1,37 +1,39 @@
-import { useParams } from "react-router-dom";
+// src/components/Category.jsx
+import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import { PRODUCT_QUERY as PRODUCT_BY_ID } from "../graphql/products.js";
+import { CATEGORY_QUERY as CATEGORY_BY_ID } from "../graphql/categories.js";
 
-function Product() {
+function Category() {
   const { id } = useParams();
-  const { data, loading, error } = useQuery(PRODUCT_BY_ID, {
-    variables: { productID: parseInt(id, 10) },
+  const { data, loading, error } = useQuery(CATEGORY_BY_ID, {
+    variables: { categoryID: parseInt(id, 10) },
   });
 
   if (loading) return "Loading...";
   if (error)   return <pre>{error.message}</pre>;
 
-  const p = data.product;
+  const cat = data.category;
   return (
     <div>
-      <h2>{p.productName} (ID: {p.productID})</h2>
-      <p>Price: ${p.price.toFixed(2)}</p>
-      <p>
-        Category: {p.category.categoryName} (
-        <a href={`/category/${p.category.categoryID}`}>
-          {p.category.categoryID}
-        </a>
-        )
-      </p>
-      <p>
-        Manufacturer: {p.manufacturer.manuName} (
-        <a href={`/manufacturer/${p.manufacturer.manuID}`}>
-          {p.manufacturer.manuID}
-        </a>
-        )
-      </p>
+      <h2>
+        {cat.categoryName} (ID: {cat.categoryID})
+      </h2>
+      <h3>Products in this category:</h3>
+      {cat.products.length > 0 ? (
+        <ul>
+          {cat.products.map((p) => (
+            <li key={p.productID}>
+              <Link to={`/product/${p.productID}`}>
+                {p.productName} — ${p.price.toFixed(2)}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No products found.</p>
+      )}
     </div>
   );
 }
 
-export default Product;
+export default Category;
