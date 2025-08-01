@@ -10,7 +10,12 @@ import {
   Snackbar,
   Alert,
   Link,
+  Divider,
 } from '@mui/material';
+import { Google } from '@mui/icons-material';
+
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { auth } from '../firebase'; // 👉 Đảm bảo đúng path tới firebase.js
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -32,6 +37,20 @@ const Login = () => {
       navigate('/user');
     } else {
       setError('Email hoặc mật khẩu không đúng');
+      setOpen(true);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      console.log('Đăng nhập Google thành công:', user);
+      // 👉 Điều hướng tuỳ theo logic của anh:
+      navigate('/user');
+    } catch (err) {
+      setError('Đăng nhập Google thất bại: ' + err.message);
       setOpen(true);
     }
   };
@@ -84,7 +103,19 @@ const Login = () => {
             Đăng nhập
           </Button>
 
-          <Box textAlign="center">
+          <Divider sx={{ my: 2 }}>hoặc</Divider>
+
+          <Button
+            fullWidth
+            variant="outlined"
+            startIcon={<Google />}
+            onClick={handleGoogleLogin}
+            sx={{ textTransform: 'none' }}
+          >
+            Đăng nhập với Google
+          </Button>
+
+          <Box textAlign="center" mt={2}>
             <Link component={RouterLink} to="/register" underline="hover" sx={{ mr: 2 }}>
               Đăng ký
             </Link>
