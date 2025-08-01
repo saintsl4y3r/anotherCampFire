@@ -1,12 +1,21 @@
+// server/data/mongoRepo.js
 import mongoose from "mongoose";
-import { UserSchema } from "./models/users.js";
+import { UserSchema } from "./models/user.js";
 import { CategorySchema } from "./models/category.js";
+import { ProductSchema } from "./models/product.js";
+import { ManufacturerSchema } from "./models/manufacturer.js";
+import { OrderSchema } from "./models/order.js";
+import { DetailSchema } from "./models/detail.js";
+import { ReviewSchema } from "./models/review.js";
 
-// Models
-const User = mongoose.model("User", UserSchema);
-const Category = mongoose.model("Category", CategorySchema);
+const User         = mongoose.model("User", UserSchema);
+const Category     = mongoose.model("Category", CategorySchema);
+const Product      = mongoose.model("Product", ProductSchema);
+const Manufacturer = mongoose.model("Manufacturer", ManufacturerSchema);
+const Order        = mongoose.model("Order", OrderSchema);
+const Detail       = mongoose.model("Detail", DetailSchema);
+const Review       = mongoose.model("Review", ReviewSchema);
 
-// Generic MongoRepository
 class MongoRepository {
   constructor(model) {
     this.model = model;
@@ -39,7 +48,16 @@ class MongoRepository {
   }
 }
 
-const db = new MongoRepository(User);
+// 3. Instantiate one repository per model
+const db = {
+  users:         new MongoRepository(User),
+  categories:    new MongoRepository(Category),
+  products:      new MongoRepository(Product),
+  manufacturers: new MongoRepository(Manufacturer),
+  orders:        new MongoRepository(Order),
+  details:       new MongoRepository(Detail),
+  reviews:       new MongoRepository(Review),
+};
 
-export default MongoRepository;
-export { db };
+export default db;
+export { MongoRepository };
