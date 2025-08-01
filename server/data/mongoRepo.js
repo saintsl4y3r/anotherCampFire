@@ -1,6 +1,12 @@
 import mongoose from "mongoose";
-import User from "./models/users.js";
+import { UserSchema } from "./models/users.js";
+import { CategorySchema } from "./models/category.js";
 
+// Models
+const User = mongoose.model("User", UserSchema);
+const Category = mongoose.model("Category", CategorySchema);
+
+// Generic MongoRepository
 class MongoRepository {
   constructor(model) {
     this.model = model;
@@ -11,64 +17,26 @@ class MongoRepository {
     return await doc.save();
   }
 
-  async createMany(dataArray) {
-    return await this.model.insertMany(dataArray);
+  async findById(id) {
+    return await this.model.findById(id);
   }
 
-  async findById(id, options = {}) {
-    const { populate, select, lean = false } = options;
-    let query = this.model.findById(id);
-    if (select) query = query.select(select);
-    if (populate) query = query.populate(populate);
-    if (lean) query = query.lean();
-    return await query.exec();
+  async getAll() {
+    return await this.model.find();
   }
 
-  async findOne(conditions, options = {}) {
-    const { populate, select, lean = false } = options;
-    let query = this.model.findOne(conditions);
-    if (select) query = query.select(select);
-    if (populate) query = query.populate(populate);
-    if (lean) query = query.lean();
-    return await query.exec();
-  }
-
-  async find(conditions = {}, options = {}) {
-    const { populate, select, sort, limit, skip, lean = false } = options;
-    let query = this.model.find(conditions);
-    if (select) query = query.select(select);
-    if (populate) query = query.populate(populate);
-    if (sort) query = query.sort(sort);
-    if (limit) query = query.limit(limit);
-    if (skip) query = query.skip(skip);
-    if (lean) query = query.lean();
-    return await query.exec();
-  }
-
-  async updateById(id, update, options = {}) {
-    const { new: returnNew = true, runValidators = true } = options;
-    return await this.model.findByIdAndUpdate(id, update, {
-      new: returnNew,
-      runValidators,
-    });
+  async updateById(id, input) {
+    return await this.model.findByIdAndUpdate(id, input, { new: true });
   }
 
   async deleteById(id) {
-    return await this.model.findByIdAndDelete(id);
-  }
-
-  async count(conditions = {}) {
-    return await this.model.countDocuments(conditions);
-  }
-
-  async exists(conditions) {
-    return (await this.model.countDocuments(conditions)) > 0;
+    const result = await this.model.deleteOne({ _id: id });
+    return result.deletedCount;
   }
 }
 
-// ✅ Instance cho User
-const db = new MongoRepository(User);
-
-// ✅ Export mặc định là class, export thêm db instance
-export default MongoRepository;
-export { db };
+// ✅ Export all repositories under one db object
+export const db = {
+  users: new MongoRepository(User),
+  categories: new MongoRepository(Category),
+};

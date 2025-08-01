@@ -10,6 +10,11 @@ import { typeDef as orders, resolvers as ordersResolvers } from './orders.js';
 import { typeDef as details, resolvers as detailsResolvers } from './details.js';
 import { typeDef as manufacturers, resolvers as manufacturersResolvers } from './manufacturers.js';
 
+import {
+  typeDef as login,
+  resolvers as loginResolvers,
+} from "./authentication.js";
+
 const base = `
   type Query
   type Mutation
@@ -24,6 +29,7 @@ const typeDefs = `
   ${products}
   ${users}
   ${orders}
+  ${login}
 `;
 
 const resolvers = _.merge(
@@ -34,6 +40,7 @@ const resolvers = _.merge(
   productsResolvers,
   usersResolvers,
   ordersResolvers,
+  loginResolvers,
 );
 
 export const schema = createSchema({

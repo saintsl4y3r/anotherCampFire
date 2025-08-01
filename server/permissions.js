@@ -1,13 +1,10 @@
 import { GraphQLError } from "graphql";
 
-const hasGoodSecret = async (next, parent, args, ctx, info) => {
-  const secret = ctx.secret;
-  const good = secret.length >= 8;
-
-  if (!good) {
+const hasGoodSecret = async (next, parent, args, ctx) => {
+  const secret = ctx?.secret || '';
+  if (secret.length < 8) {
     throw new GraphQLError(`Not a good secret!`);
   }
-
   return next();
 };
 
