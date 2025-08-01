@@ -33,10 +33,13 @@ class MongoRepository {
     const result = await this.model.deleteOne({ _id: id });
     return result.deletedCount;
   }
+
+  async exists(conditions) {
+    return (await this.model.countDocuments(conditions)) > 0;
+  }
 }
 
-// ✅ Export all repositories under one db object
-export const db = {
-  users: new MongoRepository(User),
-  categories: new MongoRepository(Category),
-};
+const db = new MongoRepository(User);
+
+export default MongoRepository;
+export { db };
