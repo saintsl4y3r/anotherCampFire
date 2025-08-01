@@ -66,9 +66,7 @@ class MongoRepository {
   }
 }
 
-// ✅ Instance cho User
 const db = new MongoRepository(User);
 
-// ✅ Export mặc định là class, export thêm db instance
 export default MongoRepository;
 export { db };
