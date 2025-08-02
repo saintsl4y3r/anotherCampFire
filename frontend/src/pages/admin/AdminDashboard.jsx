@@ -1,12 +1,13 @@
 import React from 'react';
 import {
-  Box, Typography, Grid, Button, Drawer, List, ListItem, ListItemIcon,
-  ListItemText, AppBar, Toolbar, IconButton, CssBaseline
+  Box, Typography, List, ListItem, ListItemIcon, ListItemText,
+  AppBar, Toolbar, IconButton, CssBaseline, Drawer
 } from '@mui/material';
 import {
   Dashboard, Inventory, Category, Store, People, RateReview,
-  Settings, Logout, ChevronRight
+  Settings, Logout
 } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 const menuItems = [
   { label: 'Tổng quan', icon: <Dashboard />, path: '/admin/overview' },
@@ -19,23 +20,32 @@ const menuItems = [
 ];
 
 const AdminDashboard = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // 👉 Clear login state here (e.g., token or flag)
+    localStorage.removeItem('token');
+    localStorage.removeItem('adminLoggedIn');
+    navigate('/login');
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
 
-      {/* Top bar */}
+      {/* Top AppBar */}
       <AppBar position="fixed" sx={{ zIndex: 1201, bgcolor: 'white', color: 'black' }}>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Typography variant="h6" fontWeight="bold">
             🛠️ Trang Quản Trị CampFire
           </Typography>
-          <IconButton color="inherit" edge="end" href="/logout" title="Đăng xuất">
+          <IconButton color="inherit" edge="end" onClick={handleLogout} title="Đăng xuất">
             <Logout />
           </IconButton>
         </Toolbar>
       </AppBar>
 
-      {/* Sidebar */}
+      {/* Sidebar Drawer */}
       <Drawer
         variant="permanent"
         sx={{
