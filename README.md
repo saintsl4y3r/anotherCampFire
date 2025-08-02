@@ -24,9 +24,9 @@ This is a final project for building a full-stack web application for renting an
 
 | Member Name           | Contribution Description                                                                                                                                         | Contribution % |
 |------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------|
-| Võ Huỳnh Thái Bảo      | - Frontend UI with React and Material UI<br>- Firebase integration<br>- Library & Wishlist features<br>- Role-based access control (Admin / Customer)            | 33.33%         |
-| Hoàng Anh              | - Backend system using GraphQL Yoga and MongoDB<br>- Firebase authentication logic<br>- Firestore data structure and backend API logic                         | 33.33%         |
-| Cao Sĩ Siêu            | - Admin dashboard: manage products, users, reviews<br>- Bug fixing across modules<br>- Final report writing and project documentation<br>- Deployment and testing | 33.33%         |
+| **Võ Huỳnh Thái Bảo**  | - Frontend UI using React and Material UI<br>- Firebase integration<br>- Library & Wishlist features<br>- Role-based access control (Admin / Customer)           | 33.33%         |
+| **Hoàng Anh**          | - Backend system using GraphQL Yoga and MongoDB<br>- Firebase authentication logic<br>- Firestore data modeling<br>- API integration with frontend                | 33.33%         |
+| **Cao Sĩ Siêu**        | - Admin dashboard: manage products, users, and reviews<br>- Bug fixing across modules<br>- Final report writing and documentation<br>- System deployment & testing| 33.33%         |
 
 ### Total Group Contribution: **100%**
 
@@ -36,23 +36,23 @@ This is a final project for building a full-stack web application for renting an
 
 ## Technologies Used
 
-- Frontend: React.js, Material UI, React Router
-- Backend: GraphQL Yoga, MongoDB, Firebase Auth
-- Database: Firestore
-- Authentication: Firebase with Role-based access (Admin / Customer)
-- Hosting: Firebase Hosting / Local Development
+- **Frontend:** React.js, Material UI, React Router
+- **Backend:** GraphQL Yoga, MongoDB, Firebase Auth
+- **Database:** Firestore
+- **Authentication:** Firebase with Role-based access (Admin / Customer)
+- **Hosting:** Firebase Hosting / Local Development
 
 ---
 
 ## Project Features
 
-- Login/Register with Firebase Auth
+- User registration and login with Firebase
 - Role-based navigation (Admin / Customer)
-- Product catalog with image, price, rating, and specs
-- Wishlist and Cart features
-- Payment screen and order history (Library)
-- Admin dashboard: manage products, categories, users, reviews
-- Search and filter by category, brand, rating
+- Product catalog with details, ratings, and availability
+- Wishlist and shopping cart functionality
+- Payment screen and library for order history
+- Admin dashboard for managing products, categories, users, and reviews
+- Filtering and searching by category, brand, and rating
 
 ---
 
@@ -71,4 +71,4 @@ This project was developed as part of the Final Coursework under the guidance of
 ## Acknowledgements
 
 - Thank you to our instructor Th.S Trần Duy Quang for his guidance.
-- Thanks to open-source tools and the Firebase ecosystem for enabling development.
+- Grateful for open-source tools and Firebase ecosystem that powered this project.
