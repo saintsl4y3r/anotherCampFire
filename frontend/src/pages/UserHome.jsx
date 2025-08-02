@@ -40,13 +40,253 @@ import {
 const UserHome = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [cartItemsCount] = useState(3); // Mock cart items count
-  const [wishlistCount] = useState(5); // Mock wishlist count
+  const [cartItemsCount] = useState(3);
+  const [wishlistCount] = useState(5);
 
   // Product data
   const [products] = useState([
-    // ... (product data remains unchanged)
-  ]);
+  {
+    id: 1,
+    name: "Lều Coleman Instant Cabin 8",
+    category: "Lều",
+    manufacturer: "Coleman",
+    price: 4500000,
+    stock: 15,
+    description: "Lều gia đình 8 người, dựng trong 60 giây với công nghệ Pre-Attached Poles",
+    specifications: {
+      capacity: "8 người",
+      dimensions: "4.3m x 2.4m x 1.8m",
+      weight: "18.5kg",
+      material: "Polyester 75D, chống thấm nước"
+    },
+    images: ["tent1.jpg", "tent1_2.jpg"],
+    status: "active",
+    createdDate: "2024-01-15",
+    rating: 4.5,
+    reviews: 32,
+    availability: "Có sẵn",
+    image: "tent1.jpg",
+    hot: true,
+    originalPrice: 7000000
+  },
+  {
+    id: 2,
+    name: "Túi ngủ Marmot Trestles Elite Eco 20",
+    category: "Túi ngủ",
+    manufacturer: "Marmot",
+    price: 2800000,
+    stock: 8,
+    description: "Túi ngủ mùa đông với lớp lót SpiraFil Eco làm từ chai nhựa tái chế",
+    specifications: {
+      temperature: "-6°C đến 4°C",
+      dimensions: "203cm x 81cm",
+      weight: "1.36kg",
+      material: "Nylon Pertex Quantum, SpiraFil Eco"
+    },
+    images: ["sleeping_bag1.jpg"],
+    status: "active",
+    createdDate: "2024-02-10",
+    rating: 4.7,
+    reviews: 18,
+    availability: "Còn ít",
+    image: "sleeping_bag1.jpg",
+    hot: false,
+    originalPrice: 4200000
+  },
+  {
+    id: 3,
+    name: "Bếp gas MSR PocketRocket 2",
+    category: "Bếp dã ngoại",
+    manufacturer: "MSR",
+    price: 1200000,
+    stock: 25,
+    description: "Bếp gas siêu nhẹ, nhỏ gọn với khả năng đun sôi nước cực nhanh",
+    specifications: {
+      power: "8200 BTU/h",
+      weight: "73g",
+      dimensions: "10.4cm x 5.3cm x 8.5cm",
+      fuel: "Gas canister tiêu chuẩn"
+    },
+    images: ["stove1.jpg", "stove1_2.jpg"],
+    status: "active",
+    createdDate: "2024-01-20",
+    rating: 4.8,
+    reviews: 45,
+    availability: "Có sẵn",
+    image: "stove1.jpg",
+    hot: true,
+    originalPrice: 2000000
+  },
+  {
+    id: 4,
+    name: "Ba lô Osprey Atmos AG 65",
+    category: "Ba lô",
+    manufacturer: "Osprey",
+    price: 6500000,
+    stock: 12,
+    description: "Ba lô trekking cao cấp với hệ thống lưng thông khí Anti-Gravity",
+    specifications: {
+      capacity: "65 lít",
+      weight: "2.1kg",
+      dimensions: "81cm x 36cm x 33cm",
+      material: "Nylon 210D, 420HD Nylon Packcloth"
+    },
+    images: ["backpack1.jpg"],
+    status: "active",
+    createdDate: "2024-01-05",
+    rating: 4.9,
+    reviews: 67,
+    availability: "Có sẵn",
+    image: "backpack1.jpg",
+    hot: true,
+    originalPrice: 8500000
+  },
+  {
+    id: 5,
+    name: "Đèn pin Fenix PD36R",
+    category: "Đèn pin",
+    manufacturer: "Fenix",
+    price: 2100000,
+    stock: 30,
+    description: "Đèn pin LED sạc USB-C với độ sáng lên đến 1600 lumens",
+    specifications: {
+      brightness: "1600 lumens",
+      battery: "Li-ion 5000mAh",
+      runtime: "200 giờ (chế độ tiết kiệm)",
+      waterproof: "IP68"
+    },
+    images: ["flashlight1.jpg"],
+    status: "active",
+    createdDate: "2024-02-01",
+    rating: 4.6,
+    reviews: 28,
+    availability: "Có sẵn",
+    image: "flashlight1.jpg",
+    hot: false,
+    originalPrice: 3000000
+  },
+  {
+    id: 6,
+    name: "Bàn ghế dã ngoại ALPS Mountaineering",
+    category: "Nội thất",
+    manufacturer: "ALPS Mountaineering",
+    price: 3200000,
+    stock: 6,
+    description: "Bộ bàn ghế gấp gọn cho 4 người, chất liệu nhôm siêu nhẹ",
+    specifications: {
+      capacity: "4 người",
+      weight: "4.8kg",
+      material: "Khung nhôm, mặt bàn melamine",
+      dimensions: "120cm x 70cm x 70cm"
+    },
+    images: ["table_set1.jpg"],
+    status: "active",
+    createdDate: "2024-01-25",
+    rating: 4.3,
+    reviews: 15,
+    availability: "Còn ít",
+    image: "table_set1.jpg",
+    hot: false,
+    originalPrice: 4500000
+  },
+  {
+    id: 7,
+    name: "Giày trekking Salomon X Ultra 3 GTX",
+    category: "Giày dép",
+    manufacturer: "Salomon",
+    price: 3800000,
+    stock: 20,
+    description: "Giày trekking với công nghệ Gore-Tex chống nước và đế Contagrip",
+    specifications: {
+      sizes: "39-46",
+      weight: "375g (size 42)",
+      material: "Synthetic, Gore-Tex",
+      sole: "Contagrip MA"
+    },
+    images: ["shoes1.jpg"],
+    status: "active",
+    createdDate: "2024-02-05",
+    rating: 4.7,
+    reviews: 52,
+    availability: "Có sẵn",
+    image: "shoes1.jpg",
+    hot: true,
+    originalPrice: 4800000
+  },
+  {
+    id: 8,
+    name: "Áo khoác Patagonia Houdini",
+    category: "Quần áo",
+    manufacturer: "Patagonia",
+    price: 2500000,
+    stock: 18,
+    description: "Áo khoác siêu nhẹ chống gió và nước, có thể gấp gọn trong túi riêng",
+    specifications: {
+      weight: "102g",
+      material: "15-denier Ripstop Nylon",
+      sizes: "XS-XXL",
+      packable: "Có thể gấp vào túi áo"
+    },
+    images: ["jacket1.jpg"],
+    status: "active",
+    createdDate: "2024-01-30",
+    rating: 4.4,
+    reviews: 38,
+    availability: "Có sẵn",
+    image: "jacket1.jpg",
+    hot: false,
+    originalPrice: 3500000
+  },
+  {
+    id: 9,
+    name: "Máy lọc nước LifeStraw Personal",
+    category: "Dụng cụ",
+    manufacturer: "LifeStraw",
+    price: 650000,
+    stock: 40,
+    description: "Ống hút lọc nước cá nhân, loại bỏ 99.9999% vi khuẩn và ký sinh trúng",
+    specifications: {
+      capacity: "4000 lít",
+      weight: "57g",
+      length: "22.5cm",
+      filtration: "0.2 micron"
+    },
+    images: ["water_filter1.jpg"],
+    status: "active",
+    createdDate: "2024-02-12",
+    rating: 4.5,
+    reviews: 23,
+    availability: "Có sẵn",
+    image: "water_filter1.jpg",
+    hot: false,
+    originalPrice: 1000000
+  },
+  {
+    id: 10,
+    name: "Hammock ENO DoubleNest",
+    category: "Võng",
+    manufacturer: "ENO",
+    price: 1800000,
+    stock: 14,
+    description: "Võng du lịch cho 2 người, chất liệu nylon parachute siêu bền",
+    specifications: {
+      capacity: "180kg",
+      weight: "532g",
+      dimensions: "2.9m x 1.9m",
+      material: "70D High Tenacity Nylon Taffeta"
+    },
+    images: ["hammock1.jpg"],
+    status: "active",
+    createdDate: "2024-01-18",
+    rating: 4.6,
+    reviews: 31,
+    availability: "Còn ít",
+    image: "hammock1.jpg",
+    hot: false,
+    originalPrice: 2700000
+  }
+]);
+
 
   // Navigation handlers
   const handleProfileMenuOpen = (event) => {

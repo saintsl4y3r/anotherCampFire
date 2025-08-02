@@ -1,5 +1,3 @@
-// migrations/20250801103742-initial_users.js
-
 export async function up(db, client) {
   const bcrypt = await import('bcrypt').then(m => m.default);
 
