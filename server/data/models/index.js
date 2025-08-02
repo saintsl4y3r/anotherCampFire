@@ -7,6 +7,7 @@ import { DetailSchema } from "./detail.js";
 import { OrderSchema } from "./order.js";
 import { UserSchema } from "./user.js";
 import { ReviewSchema } from "./review.js";
+import { WishlistSchema } from "./wishlist.js";
 
 export const Category = mongoose.model("Category", CategorySchema);
 export const Product = mongoose.model("Product", ProductSchema);
@@ -15,3 +16,4 @@ export const Detail = mongoose.model("Detail", DetailSchema);
 export const Order = mongoose.model("Order", OrderSchema);
 export const User = mongoose.model("User", UserSchema);
 export const Review = mongoose.model("Review", ReviewSchema);
+export const Wishlist = mongoose.model("Wishlist", WishlistSchema);

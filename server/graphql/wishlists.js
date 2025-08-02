@@ -1,7 +1,7 @@
 // server/graphql/wishlist.js
 import { GraphQLID, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLInt, GraphQLString, GraphQLInputObjectType } from "graphql";
 import repo from "../data/mongoRepo.js";
-import { ProductType } from "./products.js";
+import { category } from "./products.js";
 
 // Wishlist Type
 const WishlistType = new GraphQLObjectType({
@@ -13,7 +13,7 @@ const WishlistType = new GraphQLObjectType({
     createdAt: { type: GraphQLString },
     updatedAt: { type: GraphQLString },
     product: {
-      type: ProductType,
+      type: category,
       resolve: async (wishlist) => {
         return await repo.products.findById(wishlist.productID);
       },

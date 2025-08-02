@@ -1,7 +1,7 @@
 // server/models/wishlist.js
 import mongoose from "mongoose";
 
-const wishlistSchema = new mongoose.Schema({
+export const WishlistSchema = new mongoose.Schema({
   userID: {
     type: Number,
     required: true,
@@ -14,5 +14,3 @@ const wishlistSchema = new mongoose.Schema({
   timestamps: true
 });
 
-const Wishlist = mongoose.model("Wishlist", wishlistSchema);
-export default Wishlist;
