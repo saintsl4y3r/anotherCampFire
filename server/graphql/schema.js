@@ -31,7 +31,7 @@ const typeDefs = `
   ${users}
   ${orders}
   ${login}
-  ${wishlist}
+  ${wishlistTypeDef}
 `;
 
 const resolvers = _.merge(

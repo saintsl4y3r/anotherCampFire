@@ -1,5 +1,5 @@
 // server/graphql/wishlist.js
-import { db } from '../../data/mongoRepo.js';
+import { db } from '../data/mongoRepo.js';
 
 export const typeDef = `
   type Wishlist {
