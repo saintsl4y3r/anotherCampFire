@@ -7,17 +7,17 @@ import { ManufacturerSchema } from "./models/manufacturer.js";
 import { OrderSchema } from "./models/order.js";
 import { DetailSchema } from "./models/detail.js";
 import { ReviewSchema } from "./models/review.js";
-import { WishlistSchema } from "./models/wishlist.js"; // ✅ mới thêm
+import { WishlistSchema } from "./models/wishlist.js";
 
 // Models
-const User         = mongoose.model("User", UserSchema);
-const Category     = mongoose.model("Category", CategorySchema);
-const Product      = mongoose.model("Product", ProductSchema);
+const User = mongoose.model("User", UserSchema);
+const Category = mongoose.model("Category", CategorySchema);
+const Product = mongoose.model("Product", ProductSchema);
 const Manufacturer = mongoose.model("Manufacturer", ManufacturerSchema);
-const Order        = mongoose.model("Order", OrderSchema);
-const Detail       = mongoose.model("Detail", DetailSchema);
-const Review       = mongoose.model("Review", ReviewSchema);
-const Wishlist     = mongoose.model("Wishlist", WishlistSchema); // ✅ mới thêm
+const Order = mongoose.model("Order", OrderSchema);
+const Detail = mongoose.model("Detail", DetailSchema);
+const Review = mongoose.model("Review", ReviewSchema);
+const Wishlist = mongoose.model("Wishlist", WishlistSchema);
 
 // Generic Repo
 class MongoRepository {
@@ -62,14 +62,14 @@ class MongoRepository {
 
 // Repo instance
 const db = {
-  users:         new MongoRepository(User),
-  categories:    new MongoRepository(Category),
-  products:      new MongoRepository(Product),
+  users: new MongoRepository(User),
+  categories: new MongoRepository(Category),
+  products: new MongoRepository(Product),
   manufacturers: new MongoRepository(Manufacturer),
-  orders:        new MongoRepository(Order),
-  details:       new MongoRepository(Detail),
-  reviews:       new MongoRepository(Review),
-  wishlist:      new MongoRepository(Wishlist), // ✅ mới thêm
+  orders: new MongoRepository(Order),
+  details: new MongoRepository(Detail),
+  reviews: new MongoRepository(Review),
+  wishlist: new MongoRepository(Wishlist),
 };
 
 export default db;

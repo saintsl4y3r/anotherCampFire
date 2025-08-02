@@ -1,79 +1,41 @@
 // server/graphql/wishlist.js
-import { GraphQLID, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLInt, GraphQLString, GraphQLInputObjectType } from "graphql";
-import repo from "../data/mongoRepo.js";
-import { category } from "./products.js";
+import { db } from '../../data/mongoRepo.js';
 
-// Wishlist Type
-const WishlistType = new GraphQLObjectType({
-  name: "Wishlist",
-  fields: () => ({
-    id: { type: GraphQLID },
-    userID: { type: GraphQLInt },
-    productID: { type: GraphQLInt },
-    createdAt: { type: GraphQLString },
-    updatedAt: { type: GraphQLString },
-    product: {
-      type: category,
-      resolve: async (wishlist) => {
-        return await repo.products.findById(wishlist.productID);
-      },
-    }
-  })
-});
-
-// Input for creating a wishlist
-const WishlistInput = new GraphQLInputObjectType({
-  name: "WishlistInput",
-  fields: () => ({
-    userID: { type: new GraphQLNonNull(GraphQLInt) },
-    productID: { type: new GraphQLNonNull(GraphQLInt) },
-  })
-});
-
-const wishlistQueries = {
-  // Lấy tất cả wishlist theo userID
-  getWishlistByUser: {
-    type: new GraphQLList(WishlistType),
-    args: { userID: { type: new GraphQLNonNull(GraphQLInt) } },
-    resolve: async (_, { userID }) => {
-      return await repo.wishlist.find({ userID });
-    }
-  },
-};
-
-const wishlistMutations = {
-  // Thêm vào wishlist
-  addToWishlist: {
-    type: WishlistType,
-    args: {
-      input: { type: new GraphQLNonNull(WishlistInput) }
-    },
-    resolve: async (_, { input }) => {
-      // Check tồn tại trước khi thêm
-      const exists = await repo.wishlist.exists({ userID: input.userID, productID: input.productID });
-      if (exists) {
-        throw new Error("This product is already in your wishlist.");
-      }
-      return await repo.wishlist.create(input);
-    }
-  },
-
-  // Xoá khỏi wishlist
-  removeFromWishlist: {
-    type: GraphQLString,
-    args: {
-      userID: { type: new GraphQLNonNull(GraphQLInt) },
-      productID: { type: new GraphQLNonNull(GraphQLInt) }
-    },
-    resolve: async (_, { userID, productID }) => {
-      const removed = await repo.wishlist.findOneAndDelete({ userID, productID });
-      if (removed) {
-        return "Removed from wishlist successfully.";
-      } else {
-        return "Item not found in wishlist.";
-      }
-    }
+export const typeDef = `
+  type Wishlist {
+    _id: ID!
+    userId: ID!
+    productId: ID!
+    addedAt: String!
   }
-};
 
-export { WishlistType, wishlistQueries, wishlistMutations };
+  type Query {
+    getWishlist(userId: ID!): [Wishlist!]!
+  }
+
+  type Mutation {
+    addToWishlist(userId: ID!, productId: ID!): Wishlist!
+    removeFromWishlist(userId: ID!, productId: ID!): Boolean!
+  }
+`;
+
+export const resolvers = {
+  Query: {
+    getWishlist: async (_, { userId }) => {
+      const wishlist = await db.wishlist.find({ userId });
+      return wishlist;
+    },
+  },
+  Mutation: {
+    addToWishlist: async (_, { userId, productId }) => {
+      const existing = await db.wishlist.exists({ userId, productId });
+      if (existing) throw new Error('Sản phẩm đã tồn tại trong wishlist!');
+      const wishlistItem = await db.wishlist.create({ userId, productId, addedAt: new Date().toISOString() });
+      return wishlistItem;
+    },
+    removeFromWishlist: async (_, { userId, productId }) => {
+      const result = await db.wishlist.findOneAndDelete({ userId, productId });
+      return !!result;
+    },
+  },
+};
