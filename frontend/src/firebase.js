@@ -1,7 +1,7 @@
 // src/firebase.js
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth"; // Thêm auth để dùng Google login
-// import { getAnalytics } from "firebase/analytics"; // Chỉ dùng nếu cần
+import { getFirestore } from "firebase/firestore"; // Thêm Firestore
 
 const firebaseConfig = {
   apiKey: "AIzaSyA8RibVR5EkkvsWzsTYHDZ82aAt9H_9eHw",
@@ -14,7 +14,12 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app); // optional
+// const analytics = getAnalytics(app); // optional, bạn có thể bỏ nếu không dùng
+
+// Khởi tạo Auth
 const auth = getAuth(app);
 
-export { auth };
+// Khởi tạo Firestore
+const db = getFirestore(app);
+
+export { auth, db }; // Export cả auth và db
