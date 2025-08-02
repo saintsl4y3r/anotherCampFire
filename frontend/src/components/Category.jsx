@@ -10,16 +10,14 @@ import {
 } from "../graphql/categories.js";
 
 function Category() {
-  const { id } = useParams();      // id là string _id từ server
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  // 1) Load this category
   const { data, loading, error, refetch } = useQuery(CATEGORY_BY_ID, {
     variables: { id },
     fetchPolicy: "network-only",
   });
 
-  // 2) Prepare mutations
   const [createCategory] = useMutation(CREATE_CATEGORY, {
     onCompleted: () => {
       setNewName("");
@@ -42,18 +40,15 @@ function Category() {
     onError: (err) => alert(err.message),
   });
 
-  // 3) Local state
   const [newName, setNewName] = useState("");
   const [editName, setEditName] = useState("");
 
-  // 4) Initialize editName when data loads
   useEffect(() => {
     if (data?.category) {
       setEditName(data.category.categoryName);
     }
   }, [data]);
 
-  // 5) Handlers
   const handleCreate = () => {
     const name = newName.trim();
     if (!name) return;
@@ -72,7 +67,6 @@ function Category() {
     }
   };
 
-  // 6) Render states
   if (loading) return <p>Loading...</p>;
   if (error)   return <pre>{error.message}</pre>;
 

@@ -1,4 +1,3 @@
-// src/components/Manufacturer.jsx
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
@@ -20,7 +19,6 @@ function Manufacturer() {
     fetchPolicy: "network-only",
   });
 
-  // 2) Set up mutations
   const [createManufacturer] = useMutation(CREATE_MANUFACTURER, {
     onCompleted: () => {
       setNewName("");
@@ -44,18 +42,15 @@ function Manufacturer() {
     onError: (err) => alert(err.message),
   });
 
-  // 3) Local state
   const [newName, setNewName] = useState("");
   const [editName, setEditName] = useState("");
 
-  // Initialize editName when data arrives
   useEffect(() => {
     if (data?.manufacturer) {
       setEditName(data.manufacturer.manuName);
     }
   }, [data]);
 
-  // 4) Handlers
   const handleCreate = () => {
     if (!newName.trim()) return;
     createManufacturer({
@@ -76,7 +71,6 @@ function Manufacturer() {
     }
   };
 
-  // 5) Render
   if (loading) return "Loading...";
   if (error)   return <pre>{error.message}</pre>;
 
