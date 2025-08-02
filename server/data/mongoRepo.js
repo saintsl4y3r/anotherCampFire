@@ -7,7 +7,9 @@ import { ManufacturerSchema } from "./models/manufacturer.js";
 import { OrderSchema } from "./models/order.js";
 import { DetailSchema } from "./models/detail.js";
 import { ReviewSchema } from "./models/review.js";
+import { WishlistSchema } from "./models/wishlist.js"; // ✅ mới thêm
 
+// Models
 const User         = mongoose.model("User", UserSchema);
 const Category     = mongoose.model("Category", CategorySchema);
 const Product      = mongoose.model("Product", ProductSchema);
@@ -15,7 +17,9 @@ const Manufacturer = mongoose.model("Manufacturer", ManufacturerSchema);
 const Order        = mongoose.model("Order", OrderSchema);
 const Detail       = mongoose.model("Detail", DetailSchema);
 const Review       = mongoose.model("Review", ReviewSchema);
+const Wishlist     = mongoose.model("Wishlist", WishlistSchema); // ✅ mới thêm
 
+// Generic Repo
 class MongoRepository {
   constructor(model) {
     this.model = model;
@@ -46,9 +50,17 @@ class MongoRepository {
   async exists(conditions) {
     return (await this.model.countDocuments(conditions)) > 0;
   }
+
+  async find(conditions) {
+    return await this.model.find(conditions);
+  }
+
+  async findOneAndDelete(conditions) {
+    return await this.model.findOneAndDelete(conditions);
+  }
 }
 
-// 3. Instantiate one repository per model
+// Repo instance
 const db = {
   users:         new MongoRepository(User),
   categories:    new MongoRepository(Category),
@@ -57,6 +69,7 @@ const db = {
   orders:        new MongoRepository(Order),
   details:       new MongoRepository(Detail),
   reviews:       new MongoRepository(Review),
+  wishlist:      new MongoRepository(Wishlist), // ✅ mới thêm
 };
 
 export default db;

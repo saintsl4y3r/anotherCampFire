@@ -13,18 +13,25 @@ import {
   Chip,
   Divider,
   CircularProgress,
+  IconButton,
 } from '@mui/material';
-import { ArrowBack, ShoppingCart } from '@mui/icons-material';
+import { ArrowBack, ShoppingCart, Favorite, FavoriteBorder } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { getAuth } from 'firebase/auth';
+import { doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const ProductDetailScreen = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isInWishlist, setIsInWishlist] = useState(false);
+  const auth = getAuth();
+  const user = auth.currentUser;
 
-  // Dữ liệu mẫu (có thể thay bằng API hoặc GraphQL query)
   const productsData = [
+    // Dữ liệu mẫu từ trước
     {
       id: 1,
       name: "Lều Coleman Instant Cabin 8",
@@ -66,17 +73,61 @@ const ProductDetailScreen = () => {
       reviews: 18,
       availability: "Còn ít"
     },
-    // Thêm các sản phẩm khác từ dữ liệu mẫu của bạn nếu cần
   ];
 
   useEffect(() => {
-    // Giả lập lấy dữ liệu sản phẩm dựa trên id
     const foundProduct = productsData.find((p) => p.id === parseInt(id));
     setTimeout(() => {
       setProduct(foundProduct || null);
       setLoading(false);
-    }, 500); // Giả lập delay để hiển thị loading
-  }, [id]);
+    }, 500);
+
+    if (user) {
+      checkWishlistStatus();
+    }
+  }, [id, user]);
+
+  const checkWishlistStatus = async () => {
+    if (user) {
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      if (userDoc.exists()) {
+        const wishlist = userDoc.data().wishlist || [];
+        setIsInWishlist(wishlist.some((item) => item.id === parseInt(id)));
+      }
+    }
+  };
+
+  const toggleWishlist = async () => {
+    if (!user) {
+      alert('Vui lòng đăng nhập để sử dụng tính năng này!');
+      return;
+    }
+
+    const productData = {
+      id: parseInt(id),
+      name: product.name,
+      image_url: product.image,
+      category: [product.category],
+      price: product.price,
+    };
+
+    try {
+      const userRef = doc(db, 'users', user.uid);
+      if (isInWishlist) {
+        await updateDoc(userRef, {
+          wishlist: arrayRemove(productData),
+        });
+        setIsInWishlist(false);
+      } else {
+        await updateDoc(userRef, {
+          wishlist: arrayUnion(productData),
+        }, { merge: true });
+        setIsInWishlist(true);
+      }
+    } catch (error) {
+      console.error('Lỗi khi cập nhật wishlist: ', error);
+    }
+  };
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
@@ -146,9 +197,14 @@ const ProductDetailScreen = () => {
 
         <Grid item xs={12} md={6}>
           <Card sx={{ p: 3, borderRadius: 2, boxShadow: 3, height: '100%' }}>
-            <Typography variant="h4" fontWeight="bold" gutterBottom>
-              {product.name}
-            </Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+              <Typography variant="h4" fontWeight="bold">
+                {product.name}
+              </Typography>
+              <IconButton onClick={toggleWishlist} color={isInWishlist ? 'error' : 'default'}>
+                {isInWishlist ? <Favorite /> : <FavoriteBorder />}
+              </IconButton>
+            </Box>
             <Typography variant="body2" color="text.secondary" gutterBottom>
               Thương hiệu: {product.manufacturer}
             </Typography>

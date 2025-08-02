@@ -41,6 +41,11 @@ const mockData = {
     { reviewID: 500, customerID: 1, productID: 1, rating: 5, comment: "Very spacious tent!", createdAt: "2025-07-11T08:30:00Z" },
     { reviewID: 501, customerID: 1, productID: 2, rating: 4, comment: "Comfortable but a bit tight.", createdAt: "2025-07-12T14:20:00Z" },
   ],
+
+    wishlist: [
+    { id: "w1", userID: 1, productID: 1 },
+    { id: "w2", userID: 1, productID: 2 },
+  ],
 };
 
 const db = {
@@ -204,6 +209,21 @@ const db = {
       mockData.reviews.filter(r => r.productID === productID),
     getByUserId: userID =>
       mockData.reviews.filter(r => r.customerID === userID),
+  },
+    
+  wishlist: {
+    getAll: () => mockData.wishlist,
+    getByUserId: (userID) => mockData.wishlist.filter(w => w.userID === userID),
+    deleteById: (id) => {
+      if (_.remove(mockData.wishlist, w => w.id === id).length) return id;
+      return null;
+    },
+    create: (input) => {
+      const id = `w${mockData.wishlist.length + 1}`;
+      const item = { id, ...input };
+      mockData.wishlist.push(item);
+      return item;
+    },
   },
 };
 

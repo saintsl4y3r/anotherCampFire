@@ -9,6 +9,7 @@ import { typeDef as users, resolvers as usersResolvers } from './users.js';
 import { typeDef as orders, resolvers as ordersResolvers } from './orders.js';
 import { typeDef as details, resolvers as detailsResolvers } from './details.js';
 import { typeDef as manufacturers, resolvers as manufacturersResolvers } from './manufacturers.js';
+import { typeDef as wishlistTypeDef, resolvers as wishlistResolvers } from './wishlist.js';
 
 import {
   typeDef as login,
@@ -30,6 +31,7 @@ const typeDefs = `
   ${users}
   ${orders}
   ${login}
+  ${wishlist}
 `;
 
 const resolvers = _.merge(
@@ -41,6 +43,7 @@ const resolvers = _.merge(
   usersResolvers,
   ordersResolvers,
   loginResolvers,
+  wishlistResolvers,
 );
 
 export const schema = createSchema({
