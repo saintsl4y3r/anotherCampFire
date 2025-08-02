@@ -11,26 +11,27 @@ import {
   TableCell,
   TableBody,
   Paper,
+  Button,
+  Stack,
 } from "@mui/material";
 
-// Dummy data—replace with real data fetching later
 const monthlyData = [
-  { period: "January", revenue: 12000 },
-  { period: "February", revenue: 15000 },
-  { period: "March", revenue: 14000 },
+  { period: "January", revenue: 120000000 },
+  { period: "February", revenue: 150000000 },
+  { period: "March", revenue: 140000000 },
 ];
 
 const weeklyData = [
-  { period: "Week 1", revenue: 3000 },
-  { period: "Week 2", revenue: 3500 },
-  { period: "Week 3", revenue: 3200 },
-  { period: "Week 4", revenue: 3300 },
+  { period: "Week 1", revenue: 30000000 },
+  { period: "Week 2", revenue: 35000000 },
+  { period: "Week 3", revenue: 32000000 },
+  { period: "Week 4", revenue: 33000000 },
 ];
 
 const productData = [
-  { productName: "4-Person Tent", revenue: 50000 },
-  { productName: "Hiking Shoes", revenue: 42000 },
-  { productName: "Climbing Rope", revenue: 31000 },
+  { productName: "4-Person Tent", revenue: 50000000 },
+  { productName: "Hiking Shoes", revenue: 42000000 },
+  { productName: "Climbing Rope", revenue: 31000000 },
 ];
 
 export default function FinanceReport() {
@@ -38,6 +39,14 @@ export default function FinanceReport() {
 
   const handleChange = (_, newVal) => {
     setTab(newVal);
+  };
+
+  const handleExportMonth = () => {
+    console.log("Exporting monthly report...");
+  };
+
+  const handleExportYear = () => {
+    console.log("Exporting yearly report...");
   };
 
   let rows;
@@ -55,9 +64,18 @@ export default function FinanceReport() {
 
   return (
     <Box>
-      <Typography variant="h4" gutterBottom>
-        Báo cáo doanh thu
-      </Typography>
+      <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
+        <Typography variant="h4">Báo cáo doanh thu</Typography>
+        <Stack direction="row" spacing={1}>
+          <Button variant="outlined" onClick={handleExportMonth}>
+            Xuất báo cáo tháng
+          </Button>
+          <Button variant="outlined" onClick={handleExportYear}>
+            Xuất báo cáo năm
+          </Button>
+        </Stack>
+      </Stack>
+
       <Tabs value={tab} onChange={handleChange} sx={{ mb: 2 }}>
         <Tab label="Theo tháng" />
         <Tab label="Theo tuần" />
