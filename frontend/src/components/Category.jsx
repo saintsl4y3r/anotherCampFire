@@ -3,113 +3,112 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
 import {
-  CATEGORY_QUERY as CATEGORY_BY_ID,
+  CATEGORY_BY_ID,
   CREATE_CATEGORY,
   UPDATE_CATEGORY,
   DELETE_CATEGORY,
 } from "../graphql/categories.js";
 
 function Category() {
-  const { id } = useParams();
-  const categoryID = parseInt(id, 10);
+  const { id } = useParams();      // id là string _id từ server
   const navigate = useNavigate();
 
   // 1) Load this category
   const { data, loading, error, refetch } = useQuery(CATEGORY_BY_ID, {
-    variables: { categoryID },
+    variables: { id },
     fetchPolicy: "network-only",
   });
 
-  // 2) Set up mutations
+  // 2) Prepare mutations
   const [createCategory] = useMutation(CREATE_CATEGORY, {
     onCompleted: () => {
       setNewName("");
-      alert("Category created.");
+      alert("Đã tạo danh mục mới.");
     },
     onError: (err) => alert(err.message),
   });
   const [updateCategory] = useMutation(UPDATE_CATEGORY, {
     onCompleted: () => {
-      alert("Category updated.");
+      alert("Đã cập nhật danh mục.");
       refetch();
     },
     onError: (err) => alert(err.message),
   });
   const [deleteCategory] = useMutation(DELETE_CATEGORY, {
     onCompleted: () => {
-      alert("Category deleted.");
-      navigate("/categories");
+      alert("Đã xóa danh mục.");
+      navigate("/admin/categories");
     },
     onError: (err) => alert(err.message),
   });
 
-  // 3) Local state for forms
+  // 3) Local state
   const [newName, setNewName] = useState("");
   const [editName, setEditName] = useState("");
 
-  // when data loads, initialize editName
+  // 4) Initialize editName when data loads
   useEffect(() => {
     if (data?.category) {
       setEditName(data.category.categoryName);
     }
   }, [data]);
 
-  // 4) Handlers
+  // 5) Handlers
   const handleCreate = () => {
-    if (!newName.trim()) return;
-    createCategory({ variables: { input: { categoryName: newName } } });
+    const name = newName.trim();
+    if (!name) return;
+    createCategory({ variables: { input: { categoryName: name } } });
   };
 
   const handleUpdate = () => {
-    if (!editName.trim()) return;
-    updateCategory({
-      variables: { categoryID, input: { categoryName: editName } },
-    });
+    const name = editName.trim();
+    if (!name) return;
+    updateCategory({ variables: { id, input: { categoryName: name } } });
   };
 
   const handleDelete = () => {
-    if (window.confirm("Xác nhận xóa category này?")) {
-      deleteCategory({ variables: { categoryID } });
+    if (window.confirm("Xác nhận xóa danh mục này?")) {
+      deleteCategory({ variables: { id } });
     }
   };
 
-  // 5) Render
-  if (loading) return "Loading...";
-  if (error) return <pre>{error.message}</pre>;
+  // 6) Render states
+  if (loading) return <p>Loading...</p>;
+  if (error)   return <pre>{error.message}</pre>;
 
   const cat = data.category;
 
   return (
     <div>
       <h2>
-        Category #{cat.categoryID}: {cat.categoryName}
+        Danh mục: {cat.categoryName} (ID: {cat._id})
       </h2>
 
       {/* UPDATE form */}
-      <div style={{ marginBottom: "1rem" }}>
-        <h3>Cập nhật category</h3>
+      <section style={{ marginBottom: 24 }}>
+        <h3>Cập nhật danh mục</h3>
         <input
           type="text"
           value={editName}
           onChange={(e) => setEditName(e.target.value)}
         />
         <button onClick={handleUpdate}>Lưu thay đổi</button>
-        <button onClick={handleDelete} style={{ marginLeft: "0.5rem" }}>
-          Xóa category
+        <button onClick={handleDelete} style={{ marginLeft: 8 }}>
+          Xóa danh mục
         </button>
-      </div>
+      </section>
 
       {/* CREATE new */}
-      <div style={{ marginTop: "2rem" }}>
-        <h3>Tạo mới category</h3>
+      <section>
+        <h3>Tạo mới danh mục</h3>
         <input
           type="text"
-          placeholder="Tên category mới"
+          placeholder="Tên danh mục mới"
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
         />
         <button onClick={handleCreate}>Tạo</button>
-      </div>
+      </section>
     </div>
   );
 }

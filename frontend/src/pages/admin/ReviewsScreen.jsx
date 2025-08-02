@@ -25,14 +25,14 @@ const ReviewsScreen = () => {
     },
     {
       id: 2,
-      user: 'Cao Sĩ Siêu',
+      user: 'Cao Sỹ Siêu',
       product: 'Đèn pin siêu sáng',
       comment: 'Ánh sáng mạnh, dùng được lâu',
       rating: 4,
     },
     {
       id: 3,
-      user: 'Hoàng Anh',
+      user: 'Phạm Phước Minh Hiếu',
       product: 'Bếp gas mini dã ngoại',
       comment: 'Nấu hơi lâu nhưng tiện lợi',
       rating: 3,

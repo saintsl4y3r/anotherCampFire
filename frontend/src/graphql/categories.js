@@ -1,52 +1,49 @@
+// src/graphql/categories.js
 import { gql } from "@apollo/client";
 
+// 1) Lấy all categories
 export const CATEGORIES_QUERY = gql`
   query Categories {
     categories {
-      categoryID
+      _id
       categoryName
     }
   }
 `;
 
-// this one is consumed by your detail-page component as CATEGORY_BY_ID
+// 2) Lấy 1 category theo ID
 export const CATEGORY_BY_ID = gql`
-  query Category($categoryID: Int!) {
-    category(categoryID: $categoryID) {
-      categoryID
+  query Category($id: ID!) {
+    category(id: $id) {
+      _id
       categoryName
-      products {
-        productID
-        productName
-        price
-      }
     }
   }
 `;
 
-// **alias** so that `import { CATEGORY_QUERY }` also works
-export const CATEGORY_QUERY = CATEGORY_BY_ID;
-
+// 3) Tạo mới
 export const CREATE_CATEGORY = gql`
   mutation CreateCategory($input: CategoryInput!) {
     createCategory(input: $input) {
-      categoryID
+      _id
       categoryName
     }
   }
 `;
 
+// 4) Cập nhật
 export const UPDATE_CATEGORY = gql`
-  mutation UpdateCategory($categoryID: Int!, $input: CategoryInput!) {
-    updateCategory(categoryID: $categoryID, input: $input) {
-      categoryID
+  mutation UpdateCategory($id: ID!, $input: CategoryInput!) {
+    updateCategory(id: $id, input: $input) {
+      _id
       categoryName
     }
   }
 `;
 
+// 5) Xóa
 export const DELETE_CATEGORY = gql`
-  mutation DeleteCategory($categoryID: Int!) {
-    deleteCategory(categoryID: $categoryID)
+  mutation DeleteCategory($id: ID!) {
+    deleteCategory(id: $id)
   }
 `;
